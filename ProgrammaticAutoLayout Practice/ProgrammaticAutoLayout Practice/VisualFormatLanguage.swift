@@ -17,8 +17,11 @@ class VisualFormatLanguage: UIViewController {
         super.viewDidLoad()
 
         redView.backgroundColor = .red
+        view.addSubview(redView)
         blueView.backgroundColor = .blue
+        view.addSubview(blueView)
         greenView.backgroundColor = .green
+         view.addSubview(greenView)
     }
     
     override func viewWillLayoutSubviews() {
@@ -27,6 +30,29 @@ class VisualFormatLanguage: UIViewController {
         redView.translatesAutoresizingMaskIntoConstraints = false
         blueView.translatesAutoresizingMaskIntoConstraints = false
         greenView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constraint Code
+        
+        let views: [String: Any] = [
+            "redView": redView,
+            "blueView": blueView,
+            "greenView": greenView
+        ]
+        
+        let metrics: [String: Any] = [
+            "viewWidth": 200,
+            "viewHeight": 200,
+            "customVerticalSpacing": 50,
+            "customHorizontalSpacing": 50
+        ]
+        
+        NSLayoutConstraint.constraints(withVisualFormat: "H:|-customHorizontalSpacing-[redView(viewWidth)]-customHorizontalSpacing-[greenView(viewWidth)]", options: [], metrics: metrics, views: views).map { $0.isActive = true }
+        
+        NSLayoutConstraint.constraints(withVisualFormat: "V:|-customVerticalSpacing-[redView(viewHeight)]-customVerticalSpacing-[blueView(redView)]", options: [], metrics: metrics, views: views).map { $0.isActive = true }
+        
+        NSLayoutConstraint.constraints(withVisualFormat: "V:|-customVerticalSpacing-[greenView(redView)]", options: [], metrics: metrics, views: views).map { $0.isActive = true }
+        
+        NSLayoutConstraint.constraints(withVisualFormat: "H:|-customHorizontalSpacing-[blueView(redView)]", options: [], metrics: metrics, views: views).map { $0.isActive = true }
     }
     
 
